@@ -40,8 +40,8 @@ fi
 #create JSON, user agent and download Resolve
 getresolve() {
   	local pkgname="$_upkgname"
-  	local major_version="18.6"
-  	local minor_version="6"
+  	local major_version="19"
+  	local minor_version="0"
   	local pkgver="${major_version}.${minor_version}"
   	local _product=""
   	local _referid=""
