@@ -78,8 +78,11 @@ makeresolvedeb () {
 
 # dependency check
 deps () {
-	sudo apt install -y fakeroot xorriso libqt5gui5 curl wget;
-	}
+	sudo apt install -y fakeroot xorriso libqt5gui5 curl wget whiptail;
+}
+
+# runtime start
+deps
 
 # menu
 while :; do
@@ -97,8 +100,7 @@ while :; do
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve' 
 		getresolve 
-		makeresolvedeb 
-		deps 
+		makeresolvedeb  
 		unzip ${_archive_name}.zip 
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
 		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
@@ -106,8 +108,7 @@ while :; do
 		exit 0 ;;
 	1) 	_upkgname='davinci-resolve-studio' 
 		getresolve 
-		makeresolvedeb 
-		deps 
+		makeresolvedeb
 		unzip ${_archive_name}.zip 
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
 		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
