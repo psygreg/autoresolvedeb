@@ -1,5 +1,5 @@
 # autoresolvedeb
-Shell script to automate downloading DaVinci Resolve and running Daniel Tufvesson's MakeResolveDeb to convert it into a .deb package, then installing it.
+Shell script to automate downloading DaVinci Resolve and running Daniel Tufvesson's *MakeResolveDeb* to convert it into a .deb package, then installing it. The second donation link is for Daniel, not myself, because of the usage of his work.
 
 ### Dependencies
 This script depends on `whiptail`, `curl` and `wget`, besides `xorriso` and `fakeroot` required for building the .deb package.
