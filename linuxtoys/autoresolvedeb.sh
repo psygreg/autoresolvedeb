@@ -98,23 +98,31 @@ while :; do
 	fi
 
 	case $CHOICE in
-	0) 	_upkgname='davinci-resolve' 
+	0) 	_upkgname='davinci-resolve'
+		cd $HOME
+		mkdir resolvedeb
+		cd resolvedeb
 		getresolve 
 		makeresolvedeb
-		cd $HOME
-		unzip ${HOME}/${_archive_name}.zip
+		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
 		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
-		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78 
+		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
+		cd ..
+		rm -rf resolvedeb
 		exit 0 ;;
 	1) 	_upkgname='davinci-resolve-studio' 
+		cd $HOME
+		mkdir resolvedeb
+		cd resolvedeb
 		getresolve 
 		makeresolvedeb
-		cd $HOME
 		unzip ${_archive_name}.zip
-		.${HOME}/makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
+		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
 		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
-		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78 
+		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
+		cd ..
+		rm -rf resolvedeb
 		exit 0 ;;
 	2 | q) break ;;
 	*) echo "Invalid Option" ;;
