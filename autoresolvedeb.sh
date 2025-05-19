@@ -1,6 +1,20 @@
 #!/bin/bash
 
-#create JSON, user agent and download Resolve
+# dependency checker
+depcheck () {
+
+    local dependencies=(fakeroot xorriso libqt5gui5 curl wget whiptail)
+    for dep in "${dependencies[@]}"; do
+        if dpkg -s "$dep" 2>/dev/null 1>&2; then
+            continue
+        else
+            sudo apt install -y "$dep"
+        fi
+    done
+
+}
+
+# download Resolve
 getresolve() {
   	local pkgname="$_upkgname"
   	local major_version="19.1"
@@ -76,13 +90,8 @@ makeresolvedeb () {
 	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 }
 
-# dependency check
-deps () {
-	sudo apt install -y fakeroot xorriso libqt5gui5 curl wget whiptail;
-}
-
 # runtime start
-deps
+depcheck
 
 # menu
 while :; do
