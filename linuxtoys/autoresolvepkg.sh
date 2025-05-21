@@ -16,22 +16,16 @@ while :; do
 
 	case $CHOICE in
 	0) 	cd $HOME
-        mkdir resolvepkg
-        cd resolvepkg
         curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/PKGBUILD
         curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/davinci-resolve.install
         makepkg -si
-		cd $HOME
-		rm -rf resolvepkg
+		rm -rf PKGBUILD
 		exit 0 ;;
 	1) 	cd $HOME
-        mkdir resolvepkg
-        cd resolvepkg
         curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/PKGBUILD
         curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/davinci-resolve.install
         makepkg -si
-		cd $HOME
-		rm -rf resolvepkg
+		rm -rf PKGBUILD
 		exit 0 ;;
 	2 | q) break ;;
 	*) echo "Invalid Option" ;;
