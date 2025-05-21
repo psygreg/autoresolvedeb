@@ -98,7 +98,7 @@ depcheck
 
 # menu
 while :; do
-	CHOICE=$(whiptail --title "AutoResolveDeb" --menu "Which version do you want to install?" 25 78 16 \
+	CHOICE=$(whiptail --title "AutoResolveRpm" --menu "Which version do you want to install?" 25 78 16 \
 	"0" "Free" \
 	"1" "Studio" \
 	"2" "Cancel" 3>&1 1>&2 2>&3)
