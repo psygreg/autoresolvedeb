@@ -20,6 +20,7 @@ getresolve() {
   	local major_version="20.0"
   	local minor_version="0"
   	pkgver="${major_version}.${minor_version}"
+	run_ver="20.0"
   	local _product=""
   	local _referid=""
   	local _siteurl=""
@@ -108,27 +109,31 @@ while :; do
 
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve'
+		# define .run file name to fix bug caused by .0 releases
+		run_name="DaVinci_Resolve_${run_ver}_Linux"
 		cd $HOME
 		mkdir resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb
 		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
-		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
+		./makeresolvedeb_${mrdver}_multi.sh ${run_name}.run 
+		sudo dpkg -i davinci-resolve_${run_ver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
 		exit 0 ;;
-	1) 	_upkgname='davinci-resolve-studio' 
+	1) 	_upkgname='davinci-resolve-studio'
+		# define .run file name to fix bug caused by .0 releases
+		run_name="DaVinci_Resolve_Studio_${run_ver}_Linux"
 		cd $HOME
 		mkdir resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb
 		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_name}.run 
-		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
+		./makeresolvedeb_${mrdver}_multi.sh ${run_name}.run 
+		sudo dpkg -i davinci-resolve-studio_${run_ver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
