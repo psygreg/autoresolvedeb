@@ -26,8 +26,8 @@ depcheck () {
 #create JSON, user agent and download Resolve
 getresolve() {
   	local pkgname="$_upkgname"
-  	local major_version="19.1"
-  	local minor_version="4"
+  	local major_version="20.0"
+  	local minor_version="0"
   	pkgver="${major_version}.${minor_version}"
   	local _product=""
   	local _referid=""
