@@ -18,8 +18,8 @@ while :; do
 	0) 	cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
-        curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/PKGBUILD
-        curl -O davinci-resolve.install https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/davinci-resolve.install
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/PKGBUILD
+        wget davinci-resolve.install https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/free/davinci-resolve.install
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
@@ -27,8 +27,8 @@ while :; do
 	1) 	cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
-        curl -O PKGBUILD https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/PKGBUILD
-        curl -O davinci-resolve.install https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/davinci-resolve.install
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/PKGBUILD
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/linuxtoys-aur/resources/davinci/studio/davinci-resolve.install
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
