@@ -118,16 +118,11 @@ while :; do
 		unzip ${_archive_name}.zip
 		chmod +x ./${_archive_run_name}.run
 		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
-        if [ $? -eq 0 ]; then
-            cd /opt/resolve/libs
-            sudo mkdir disabled
-            sudo mv libglib* disabled
-            sudo mv libgio* disabled
-            sudo mv libgmodule* disabled
-            whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
-        else
-		    whiptail --title "AutoResolveDeb" --msgbox "Installation failed." 8 78
-        fi
+    cd /opt/resolve/libs
+    sudo mkdir disabled
+    sudo mv libglib* disabled
+    sudo mv libgio* disabled
+    sudo mv libgmodule* disabled
 		cd $HOME
 		rm -rf resolverpm
 		exit 0 ;;
@@ -139,16 +134,11 @@ while :; do
 		unzip ${_archive_name}.zip
 		chmod +x ./${_archive_run_name}.run
 		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
-        if [ $? -eq 0 ]; then
-            cd /opt/resolve/libs
-            sudo mkdir disabled
-            sudo mv libglib* disabled
-            sudo mv libgio* disabled
-            sudo mv libgmodule* disabled
-            whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
-        else
-		    whiptail --title "AutoResolveDeb" --msgbox "Installation failed." 8 78
-        fi
+    cd /opt/resolve/libs
+    sudo mkdir disabled
+    sudo mv libglib* disabled
+    sudo mv libgio* disabled
+    sudo mv libgmodule* disabled
 		cd $HOME
 		rm -rf resolverpm
 		exit 0 ;;
