@@ -117,7 +117,8 @@ while :; do
 		getresolve 
 		unzip ${_archive_name}.zip
 		chmod +x ./${_archive_run_name}.run
-		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
+		export SKIP_PACKAGE_CHECK=1
+		./${_archive_run_name}.run
     cd /opt/resolve/libs
     sudo mkdir disabled
     sudo mv libglib* disabled
@@ -133,7 +134,8 @@ while :; do
 		getresolve 
 		unzip ${_archive_name}.zip
 		chmod +x ./${_archive_run_name}.run
-		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
+		export SKIP_PACKAGE_CHECK=1
+		./${_archive_run_name}.run
     cd /opt/resolve/libs
     sudo mkdir disabled
     sudo mv libglib* disabled
