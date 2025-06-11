@@ -5,9 +5,9 @@ depcheck () {
 
     local dependencies=()
     if [ "$ID_LIKE" == "suse" ]; then
-        dependencies=(xorriso curl wget newt libxcb-dri2-0 libxcb-dri2-0-32bit libgthread-2_0-0 libgthread-2_0-0-32bit libapr1 libapr-util1 libQt5Gui5 libglib-2_0-0 libglib-2_0-0-32bit libgio-2_0-0 libgmodule-2_0-0)
+        dependencies=(xorriso curl wget newt libxcb-dri2-0 libxcb-dri2-0-32bit libgthread-2_0-0 libgthread-2_0-0-32bit libapr1 libapr-util1 libQt5Gui5 libglib-2_0-0 libglib-2_0-0-32bit libgio-2_0-0 libgmodule-2_0-0 mesa-libGLU libxcrypt-compat)
     else
-        dependencies=(xorriso qt5-qtgui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util)
+        dependencies=(xorriso qt5-qtgui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat)
     fi
     for dep in "${dependencies[@]}"; do
         if rpm -qi "$dep" 2>/dev/null 1>&2; then
@@ -116,7 +116,8 @@ while :; do
 		cd resolverpm
 		getresolve 
 		unzip ${_archive_name}.zip
-		./${_archive_run_name}.run SKIP_PACKAGE_CHECK=1
+		chmod +x ./${_archive_run_name}.run
+		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
         if [ $? -eq 0 ]; then
             cd /opt/resolve/libs
             sudo mkdir disabled
@@ -136,7 +137,8 @@ while :; do
 		cd resolverpm
 		getresolve 
 		unzip ${_archive_name}.zip
-		./${_archive_run_name}.run SKIP_PACKAGE_CHECK=1
+		chmod +x ./${_archive_run_name}.run
+		SKIP_PACKAGE_CHECK=1 ./${_archive_run_name}.run
         if [ $? -eq 0 ]; then
             cd /opt/resolve/libs
             sudo mkdir disabled
