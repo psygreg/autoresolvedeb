@@ -20,7 +20,7 @@ getresolve() {
   	local major_version="20.0"
   	local minor_version="0"
   	pkgver="${major_version}.${minor_version}"
-	runver="20.0"
+	  runver="20.0"
   	local _product=""
   	local _referid=""
   	local _siteurl=""
