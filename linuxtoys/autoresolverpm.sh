@@ -114,8 +114,9 @@ while :; do
 		cd $HOME
 		mkdir resolverpm
 		cd resolverpm
-		getresolve 
-		unzip ${_archive_name}.zip
+		getresolve
+		zip -FF ${_archive_name}.zip --out archive_repaired.zip -fz
+		unzip archive_repaired.zip
 		chmod +x ./${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
@@ -131,8 +132,9 @@ while :; do
 		cd $HOME
 		mkdir resolverpm
 		cd resolverpm
-		getresolve 
-		unzip ${_archive_name}.zip
+		getresolve
+		zip -FF ${_archive_name}.zip --out archive_repaired.zip -fz
+		unzip archive_repaired.zip
 		chmod +x ./${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
