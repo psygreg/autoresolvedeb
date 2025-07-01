@@ -18,9 +18,9 @@ depcheck () {
 getresolve() {
   	local pkgname="$_upkgname"
   	local major_version="20.0"
-  	local minor_version="0"
+  	local minor_version="1"
   	pkgver="${major_version}.${minor_version}"
-	  runver="20.0"
+	  runver="20.0.1"
   	local _product=""
   	local _referid=""
   	local _siteurl=""
@@ -86,7 +86,7 @@ getresolve() {
 
 # get makeresolvedeb
 makeresolvedeb () {
-	mrdver='1.8.1'
+	mrdver='1.8.2'
 	curl --output makeresolvedeb_${mrdver}_multi.sh.tar.gz https://www.danieltufvesson.com/download/?file=makeresolvedeb/makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 }
