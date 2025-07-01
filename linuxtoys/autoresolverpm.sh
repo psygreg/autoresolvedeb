@@ -1,6 +1,6 @@
 #!/bin/bash
 # fix issue with .0 releases
-runver="20.0"
+runver="20.0.1"
 # dependency checker
 depcheck () {
 
@@ -28,7 +28,7 @@ depcheck () {
 getresolve() {
   	local pkgname="$_upkgname"
   	local major_version="20.0"
-  	local minor_version="0"
+  	local minor_version="1"
   	pkgver="${major_version}.${minor_version}"
   	local _product=""
   	local _referid=""
