@@ -3,7 +3,7 @@
 # dependency checker
 depcheck () {
 
-    local dependencies=(fakeroot xorriso libqt5gui5 curl wget whiptail)
+    local dependencies=(fakeroot xorriso libqt5gui5 libxcb-dri2-0:i386 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libglib2.0-0t64:i386 libapr1 libaprutil1)
     for dep in "${dependencies[@]}"; do
         if dpkg -s "$dep" 2>/dev/null 1>&2; then
             continue
@@ -92,8 +92,6 @@ makeresolvedeb () {
 }
 
 # runtime start
-depcheck
-
 # menu
 while :; do
 	CHOICE=$(whiptail --title "AutoResolveDeb" --menu "Which version do you want to install?" 25 78 16 \
@@ -109,6 +107,7 @@ while :; do
 
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve'
+	  depcheck
 		cd $HOME
 		mkdir resolvedeb
 		cd resolvedeb
@@ -122,6 +121,7 @@ while :; do
 		rm -rf resolvedeb
 		exit 0 ;;
 	1) 	_upkgname='davinci-resolve-studio'
+	  depcheck
 		cd $HOME
 		mkdir resolvedeb
 		cd resolvedeb
