@@ -5,7 +5,7 @@ runver="20.0.1"
 depcheck () {
 
     local dependencies=()
-    if [ "$ID_LIKE" == "suse" ]; then
+    if [[ "$ID_LIKE" == *suse* ]]; then
         dependencies=(xorriso curl wget newt libxcb-dri2-0 libxcb-dri2-0-32bit libgthread-2_0-0 libgthread-2_0-0-32bit libapr1 libapr-util1 libQt5Gui5 libglib-2_0-0 libglib-2_0-0-32bit libgio-2_0-0 libgmodule-2_0-0 mesa-libGLU libxcrypt-compat)
     else
         dependencies=(xorriso qt5-qtgui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat)
@@ -14,7 +14,7 @@ depcheck () {
         if rpm -qi "$dep" 2>/dev/null 1>&2; then
             continue
         else
-            if [ "$ID_LIKE" == "suse" ]; then
+            if [[ "$ID_LIKE" == *suse* ]]; then
                 sudo zypper in "$dep" -y
             else
                 sudo dnf in "$dep" -y
