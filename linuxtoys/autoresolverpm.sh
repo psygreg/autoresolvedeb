@@ -120,11 +120,11 @@ while :; do
 		chmod +x ${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
-    cd /opt/resolve/libs
-    sudo mkdir disabled
-    sudo mv libglib* disabled
-    sudo mv libgio* disabled
-    sudo mv libgmodule* disabled
+    	cd /opt/resolve/libs
+    	sudo mkdir disabled
+    	sudo mv libglib* disabled
+    	sudo mv libgio* disabled
+    	sudo mv libgmodule* disabled
 		cd $HOME
 		rm -rf resolverpm
 		exit 0 ;;
@@ -137,11 +137,11 @@ while :; do
 		chmod +x ./${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
-    cd /opt/resolve/libs
-    sudo mkdir disabled
-    sudo mv libglib* disabled
-    sudo mv libgio* disabled
-    sudo mv libgmodule* disabled
+    	cd /opt/resolve/libs
+    	sudo mkdir disabled
+    	sudo mv libglib* disabled
+    	sudo mv libgio* disabled
+    	sudo mv libgmodule* disabled
 		cd $HOME
 		rm -rf resolverpm
 		exit 0 ;;

@@ -125,11 +125,11 @@ while :; do
 
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve'
-    inresolve
+    	inresolve
 		exit 0 ;;
 	1) 	_upkgname='davinci-resolve-studio'
-	  inresolve
-    exit 0 ;;
+	  	inresolve
+    	exit 0 ;;
 	2 | q) break ;;
 	*) echo "Invalid Option" ;;
 	esac
