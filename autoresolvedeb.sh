@@ -17,10 +17,9 @@ depcheck () {
 #create JSON, user agent and download Resolve
 getresolve() {
   	local pkgname="$_upkgname"
-  	local major_version="20.0"
-  	local minor_version="1"
-  	pkgver="${major_version}.${minor_version}"
-	  runver="20.0.1"
+  	local major_version="20.1"
+  	local minor_version="0"
+  	pkgver="${major_version}"
   	local _product=""
   	local _referid=""
   	local _siteurl=""
@@ -34,14 +33,14 @@ getresolve() {
     		_siteurl="https://www.blackmagicdesign.com/api/support/latest-stable-version/davinci-resolve/linux"
     		sha256sum='40bf13b7745b420ed9add11c545545c2ba2174429b6c8eafe8fceb94aa258766'
     		_archive_name="DaVinci_Resolve_${pkgver}_Linux"
-    		_archive_run_name="DaVinci_Resolve_${runver}_Linux"
+    		_archive_run_name="DaVinci_Resolve_${pkgver}_Linux"
   	elif [ "$pkgname" == "davinci-resolve-studio" ]; then
     		_product="DaVinci Resolve Studio"
     		_referid='0978e9d6e191491da9f4e6eeeb722351'
     		_siteurl="https://www.blackmagicdesign.com/api/support/latest-stable-version/davinci-resolve-studio/linux"
     		sha256sum='5fb4614834c5a9f990afa977b7d5dcd2675c26529bc09a468e7cd287bbaf5097'
     		_archive_name="DaVinci_Resolve_Studio_${pkgver}_Linux"
-    		_archive_run_name="DaVinci_Resolve_Studio_${runver}_Linux"
+    		_archive_run_name="DaVinci_Resolve_Studio_${pkgver}_Linux"
   	fi
 
   	local _useragent="User-Agent: Mozilla/5.0 (X11; Linux ${CARCH}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36"
@@ -115,7 +114,7 @@ while :; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve_${runver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
@@ -128,7 +127,7 @@ while :; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve-studio_${runver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
