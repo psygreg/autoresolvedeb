@@ -101,7 +101,7 @@ inresolve () {
     unzip ${_archive_name}.zip
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
-    whiptail --title "AutoDaVinciBox" --msgbox "Installation succesful." 8 78
+    zenity --info --text "Installation successful." --width 300 --height 300
     cd ..
     rm -rf davincibox
 
@@ -109,18 +109,19 @@ inresolve () {
 
 # runtime start
 . /etc/os-release
+# TODO CHANGE SOURCE WHEN LT5 COMES OUT!!
 source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/linuxtoys.lib)
 # menu
 while :; do
-	CHOICE=$(whiptail --title "AutoDaVinciBox" --menu "Which version do you want to install?" 25 78 16 \
-	"0" "Free" \
-	"1" "Studio" \
-	"2" "Cancel" 3>&1 1>&2 2>&3)
+	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
+		--column="Version" \
+		"0" "Free" \
+		"1" "Studio" \
+		"2" "Cancel" \
+		--height=330 --width=300)
 
-	exitstatus=$?
-	if [ $exitstatus != 0 ]; then
-    	# Exit the script if the user presses Esc
-    	break
+	if [ $? -ne 0 ]; then
+		break
 	fi
 
 	case $CHOICE in

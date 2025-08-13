@@ -2,16 +2,16 @@
 
 # runtime start
 # menu
-while :; do
-	CHOICE=$(whiptail --title "AutoResolvePkg" --menu "Which version do you want to install?" 25 78 16 \
-	"0" "Free" \
-	"1" "Studio" \
-	"2" "Cancel" 3>&1 1>&2 2>&3)
-	
-	exitstatus=$?
-	if [ $exitstatus != 0 ]; then
-    	# Exit the script if the user presses Esc
-    	break
+while true; do
+	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
+		--column="Version" \
+		"0" "Free" \
+		"1" "Studio" \
+		"2" "Cancel" \
+		--height=330 --width=300)
+
+	if [ $? -ne 0 ]; then
+		break
 	fi
 
 	case $CHOICE in
@@ -23,6 +23,7 @@ while :; do
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
+		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	1) 	cd $HOME
 		mkdir resolvepkg
@@ -32,6 +33,7 @@ while :; do
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
+		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	2 | q) break ;;
 	*) echo "Invalid Option" ;;
