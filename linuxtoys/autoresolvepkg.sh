@@ -1,5 +1,5 @@
 #!/bin/bash
-
+## TODO UPDATE WHEN LT5 IS OUT, PKGBUILD and .install file location will be different!!
 # runtime start
 # menu
 while true; do
