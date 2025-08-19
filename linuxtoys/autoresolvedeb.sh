@@ -91,6 +91,7 @@ makeresolvedeb () {
 
 # runtime start
 # menu
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveDeb" --text "Which version do you want to install?" \
 		--column="Version" \

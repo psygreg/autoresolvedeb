@@ -93,6 +93,7 @@ getresolve() {
 
 # runtime start
 . /etc/os-release
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 
 # menu
 while true; do

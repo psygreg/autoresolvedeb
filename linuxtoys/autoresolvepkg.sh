@@ -1,5 +1,6 @@
 #!/bin/bash
 # runtime start
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 # menu
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
