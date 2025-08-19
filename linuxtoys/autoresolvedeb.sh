@@ -105,6 +105,7 @@ while true; do
 
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve'
+		sudo_rq
 	  	depcheck
 		cd $HOME
 		mkdir resolvedeb
@@ -118,7 +119,8 @@ while true; do
 		cd ..
 		rm -rf resolvedeb
 		exit 0 ;;
-	1) 	_upkgname='davinci-resolve-studio'
+	1) 	_upkgname='davinci-resolve-studio'\
+		sudo_rq
 	  	depcheck
 		cd $HOME
 		mkdir resolvedeb

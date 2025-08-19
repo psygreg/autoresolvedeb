@@ -1,5 +1,4 @@
 #!/bin/bash
-## TODO UPDATE WHEN LT5 IS OUT, PKGBUILD and .install file location will be different!!
 # runtime start
 # menu
 while true; do
@@ -20,6 +19,7 @@ while true; do
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
+		sudo_rq
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
@@ -30,6 +30,7 @@ while true; do
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/davinci-resolve.install
+		sudo_rq
         makepkg -si
 		cd ..
 		rm -rf resolvepkg

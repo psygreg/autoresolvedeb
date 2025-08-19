@@ -98,6 +98,7 @@ inresolve () {
     cd davincibox
     getresolve
     unzip ${_archive_name}.zip
+	sudo_rq
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
     zenity --info --text "Installation successful." --width 300 --height 300

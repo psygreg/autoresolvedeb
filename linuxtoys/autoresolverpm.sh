@@ -93,7 +93,6 @@ getresolve() {
 
 # runtime start
 . /etc/os-release
-depcheck
 
 # menu
 while true; do
@@ -115,6 +114,8 @@ while true; do
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
+		sudo_rq
+		depcheck
 		chmod +x ${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
@@ -133,6 +134,8 @@ while true; do
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
+		sudo_rq
+		depcheck
 		chmod +x ./${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
