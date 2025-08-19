@@ -18,8 +18,8 @@ while true; do
 	0) 	cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
-        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/resources/other/davinci/free/PKGBUILD
-        wget davinci-resolve.install https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/resources/other/davinci/free/davinci-resolve.install
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
         makepkg -si
 		cd ..
 		rm -rf resolvepkg
@@ -28,8 +28,8 @@ while true; do
 	1) 	cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
-        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/resources/other/davinci/studio/PKGBUILD
-        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/resources/other/davinci/studio/davinci-resolve.install
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/davinci-resolve.install
         makepkg -si
 		cd ..
 		rm -rf resolvepkg

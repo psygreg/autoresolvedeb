@@ -108,8 +108,7 @@ inresolve () {
 
 # runtime start
 . /etc/os-release
-# TODO CHANGE SOURCE WHEN LT5 COMES OUT!!
-source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/main/src/linuxtoys.lib)
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 # menu
 while :; do
 	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
