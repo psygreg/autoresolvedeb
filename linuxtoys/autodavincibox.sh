@@ -1,19 +1,23 @@
 #!/bin/bash
 
+# Source OS information first
+. /etc/os-release
+
 # install dependencies
 davinciboxdeps () {
 
     if [[ "$ID_LIKE" == *debian* ]] || [[ "$ID_LIKE" == *ubuntu* ]] || [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
         local GPU=$(lspci | grep -Ei 'vga|3d' | grep -Ei 'amd|ati|radeon|amdgpu')
         if [[ -n "$GPU" ]]; then
-            local _packages=(podman lshw distrobox rocm-podman-support)
+            _packages=(podman lshw distrobox rocm-podman-support)
         else
-            local _packages=(podman lshw distrobox)
+            _packages=(podman lshw distrobox)
         fi
     else
-        local _packages=(podman lshw distrobox)
+        _packages=(podman lshw distrobox)
     fi
     _install_
+	unset _packages
 
 }
 
@@ -108,7 +112,6 @@ inresolve () {
 }
 
 # runtime start
-. /etc/os-release
 source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 # menu
 while :; do
