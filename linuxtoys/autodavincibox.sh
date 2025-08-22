@@ -106,6 +106,7 @@ inresolve () {
 	sudo_rq
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
+	distrobox run davincibox -- add-davinci-launcher distrobox
     zenity --info --text "Installation successful." --width 300 --height 300
     cd ..
     rm -rf davincibox
