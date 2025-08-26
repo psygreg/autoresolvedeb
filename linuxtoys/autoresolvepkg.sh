@@ -5,9 +5,9 @@ source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
 		--column="Version" \
-		"0" "Free" \
-		"1" "Studio" \
-		"2" "Cancel" \
+		"Free" \
+		"Studio" \
+		"Cancel" \
 		--height=330 --width=300)
 
 	if [ $? -ne 0 ]; then
