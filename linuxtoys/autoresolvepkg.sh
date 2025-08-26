@@ -15,7 +15,7 @@ while true; do
 	fi
 
 	case $CHOICE in
-	0) 	if [ "$ID" != "cachyos" ]; then
+	"Free") if [ "$ID" != "cachyos" ]; then
 			cd $HOME
 			mkdir resolvepkg
 			cd resolvepkg
@@ -32,7 +32,7 @@ while true; do
 			zeninf "DaVinci Resolve Free has been installed successfully."
 		fi
 		exit 0 ;;
-	1) 	cd $HOME
+	"Studio") 	cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
@@ -43,7 +43,7 @@ while true; do
 		rm -rf resolvepkg
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		exit 0 ;;
-	2 | q) break ;;
+	"Cancel") break ;;
 	*) echo "Invalid Option" ;;
 	esac
 done

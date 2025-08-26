@@ -119,9 +119,9 @@ source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/
 while :; do
 	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
 		--column="Version" \
-		"0" "Free" \
-		"1" "Studio" \
-		"2" "Cancel" \
+		"Free" \
+		"Studio" \
+		"Cancel" \
 		--height=330 --width=300)
 
 	if [ $? -ne 0 ]; then
@@ -129,13 +129,13 @@ while :; do
 	fi
 
 	case $CHOICE in
-	0) 	_upkgname='davinci-resolve'
+	"Free") _upkgname='davinci-resolve'
     	inresolve
 		exit 0 ;;
-	1) 	_upkgname='davinci-resolve-studio'
+	"Studio") _upkgname='davinci-resolve-studio'
 	  	inresolve
     	exit 0 ;;
-	2 | q) break ;;
+	"Cancel") break ;;
 	*) echo "Invalid Option" ;;
 	esac
 done
