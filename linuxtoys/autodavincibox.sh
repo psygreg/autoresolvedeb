@@ -116,7 +116,7 @@ inresolve () {
 # runtime start
 source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/p3/libs/linuxtoys.lib)
 # menu
-while :; do
+while true; do
 	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
 		--column="Version" \
 		"Free" \
