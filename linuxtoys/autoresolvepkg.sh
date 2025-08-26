@@ -27,6 +27,7 @@ while true; do
 			rm -rf resolvepkg
 			zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		else
+			sudo_rq
 			sudo pacman -S davinci-resolve
 			zeninf "DaVinci Resolve Free has been installed successfully."
 		fi
