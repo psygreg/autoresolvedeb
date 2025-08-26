@@ -15,16 +15,21 @@ while true; do
 	fi
 
 	case $CHOICE in
-	0) 	cd $HOME
-		mkdir resolvepkg
-		cd resolvepkg
-        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
-        wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
-		sudo_rq
-        makepkg -si
-		cd ..
-		rm -rf resolvepkg
-		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
+	0) 	if [ "$ID" != "cachyos" ]; then
+			cd $HOME
+			mkdir resolvepkg
+			cd resolvepkg
+        	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
+        	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
+			sudo_rq
+        	makepkg -si
+			cd ..
+			rm -rf resolvepkg
+			zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
+		else
+			sudo pacman -S davinci-resolve
+			zeninf "DaVinci Resolve Free has been installed successfully."
+		fi
 		exit 0 ;;
 	1) 	cd $HOME
 		mkdir resolvepkg
