@@ -122,7 +122,7 @@ while true; do
 		cd ..
 		rm -rf resolvedeb
 		exit 0 ;;
-	"Studio") _upkgname='davinci-resolve-studio'\
+	"Studio") _upkgname='davinci-resolve-studio'
 		sudo_rq
 	  	depcheck
 		cd $HOME

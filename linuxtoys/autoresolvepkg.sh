@@ -32,7 +32,7 @@ while true; do
 			zeninf "DaVinci Resolve Free has been installed successfully."
 		fi
 		exit 0 ;;
-	"Studio") 	cd $HOME
+	"Studio") cd $HOME
 		mkdir resolvepkg
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
