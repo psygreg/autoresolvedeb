@@ -17,7 +17,6 @@ davinciboxdeps () {
         _packages=(podman lshw distrobox)
     fi
     _install_
-	unset _packages
 
 }
 
