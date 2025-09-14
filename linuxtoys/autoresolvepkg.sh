@@ -17,7 +17,7 @@ while true; do
 	case $CHOICE in
 	"Free") if [ "$ID" != "cachyos" ]; then
 			cd $HOME
-			mkdir resolvepkg
+			mkdir -p resolvepkg
 			cd resolvepkg
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
@@ -33,7 +33,7 @@ while true; do
 		fi
 		exit 0 ;;
 	"Studio") cd $HOME
-		mkdir resolvepkg
+		mkdir -p resolvepkg
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/davinci-resolve.install

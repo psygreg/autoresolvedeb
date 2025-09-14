@@ -101,6 +101,7 @@ getresolve () {
 # installation
 inresolve () {
 
+	sudo_rq
     davinciboxdeps
     cd $HOME
     git clone https://github.com/zelikos/davincibox.git
@@ -108,7 +109,6 @@ inresolve () {
     cd davincibox
     getresolve
     unzip ${_archive_name}.zip
-	sudo_rq
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
 	distrobox run davincibox -- add-davinci-launcher distrobox

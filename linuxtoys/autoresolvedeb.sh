@@ -119,7 +119,7 @@ while true; do
 		sudo_rq
 	  	depcheck
 		cd $HOME
-		mkdir resolvedeb
+		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb
@@ -134,7 +134,7 @@ while true; do
 		sudo_rq
 	  	depcheck
 		cd $HOME
-		mkdir resolvedeb
+		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb

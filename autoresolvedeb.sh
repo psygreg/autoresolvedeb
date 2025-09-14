@@ -117,7 +117,7 @@ while :; do
 	case $CHOICE in
 	0) 	_upkgname='davinci-resolve'
 		cd $HOME
-		mkdir resolvedeb
+		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb
@@ -130,7 +130,7 @@ while :; do
 		exit 0 ;;
 	1) 	_upkgname='davinci-resolve-studio'
 		cd $HOME
-		mkdir resolvedeb
+		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve 
 		makeresolvedeb

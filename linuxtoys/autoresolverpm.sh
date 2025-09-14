@@ -120,7 +120,7 @@ while true; do
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
 		cd $HOME
-		mkdir resolverpm
+		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
@@ -140,7 +140,7 @@ while true; do
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		cd $HOME
-		mkdir resolverpm
+		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
