@@ -22,7 +22,8 @@ while true; do
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/PKGBUILD
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/free/davinci-resolve.install
 			sudo_rq
-        	makepkg -si
+        	makepkg -d
+			sudo pacman -U davinci-resolve.pkg.tar.zst
 			cd ..
 			rm -rf resolvepkg
 			zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
@@ -38,7 +39,8 @@ while true; do
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/PKGBUILD
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/refs/heads/master/resources/davinci/studio/davinci-resolve.install
 		sudo_rq
-        makepkg -si
+        makepkg -d
+		sudo pacman -U davinci-resolve-studio.pkg.tar.zst
 		cd ..
 		rm -rf resolvepkg
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
