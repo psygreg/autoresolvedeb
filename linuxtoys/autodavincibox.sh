@@ -6,15 +6,16 @@
 # install dependencies
 davinciboxdeps () {
 
+	local nvGPU=$(lspci | grep -Ei '(nvidia|geforce)')
+	local rxGPU=$(lspci | grep -Ei 'vga|3d' | grep -Ei 'amd|ati|radeon|amdgpu')
+	_packages=(podman lshw distrobox)
     if [[ "$ID_LIKE" == *debian* ]] || [[ "$ID_LIKE" == *ubuntu* ]] || [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
-        local GPU=$(lspci | grep -Ei 'vga|3d' | grep -Ei 'amd|ati|radeon|amdgpu')
-        if [[ -n "$GPU" ]]; then
-            _packages=(podman lshw distrobox rocm-podman-support)
-        else
-            _packages=(podman lshw distrobox)
-        fi
-    else
-        _packages=(podman lshw distrobox)
+        if [[ -n "$rxGPU" ]]; then
+            _packages+=(rocm-podman-support)
+		fi
+    fi
+	if [ -n "$nvGPU" ]; then
+        _packages+=(nvidia-container-toolkit)
     fi
     _install_
 
