@@ -125,7 +125,7 @@ while true; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		cd ..
 		rm -rf resolvedeb
@@ -140,7 +140,7 @@ while true; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		cd ..
 		rm -rf resolvedeb

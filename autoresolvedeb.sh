@@ -123,7 +123,7 @@ while :; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve_${pkgver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
@@ -136,7 +136,7 @@ while :; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
-		sudo dpkg -i davinci-resolve-studio_${pkgver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
