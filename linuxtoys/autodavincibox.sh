@@ -112,7 +112,7 @@ inresolve () {
     unzip ${_archive_name}.zip
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
-	distrobox run davincibox -- add-davinci-launcher distrobox
+	distrobox enter davincibox -- add-davinci-launcher distrobox
 	local GPU=$(lspci | grep -Ei '(radeon|rx)')
     if [[ -n "$GPU" ]]; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
