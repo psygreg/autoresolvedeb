@@ -102,7 +102,7 @@ getresolve () {
 
 # runtime start
 . /etc/os-release
-source <(curl -s https://codeberg.org/psygreg/linuxtoys/raw/branch/master/p3/libs/linuxtoys.lib)
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 
 # menu
 while true; do
@@ -112,7 +112,7 @@ while true; do
 		"Studio" \
 		"Cancel" \
 		--height=330 --width=300)
-	
+
 	if [ $? -ne 0 ]; then
         break
    	fi

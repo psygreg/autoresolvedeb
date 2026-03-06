@@ -1,6 +1,6 @@
 #!/bin/bash
 # runtime start
-source <(curl -s https://codeberg.org/psygreg/linuxtoys/raw/branch/master/p3/libs/linuxtoys.lib)
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # menu
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
@@ -19,8 +19,8 @@ while true; do
 			cd $HOME
 			mkdir -p resolvepkg
 			cd resolvepkg
-        	wget https://codeberg.org/psygreg/linuxtoys/raw/branch/master/resources/davinci/free/PKGBUILD
-        	wget https://codeberg.org/psygreg/linuxtoys/raw/branch/master/resources/davinci/free/davinci-resolve.install
+        	wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/free/PKGBUILD
+        	wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/free/davinci-resolve.install
 			sudo_rq
         	makepkg -d
 			sudo pacman --noconfirm -U davinci-resolve.pkg.tar.zst
@@ -36,8 +36,8 @@ while true; do
 	"Studio") cd $HOME
 		mkdir -p resolvepkg
 		cd resolvepkg
-        wget https://codeberg.org/psygreg/linuxtoys/raw/branch/master/resources/davinci/studio/PKGBUILD
-        wget https://codeberg.org/psygreg/linuxtoys/raw/branch/master/resources/davinci/studio/davinci-resolve.install
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/studio/PKGBUILD
+        wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/studio/davinci-resolve.install
 		sudo_rq
         makepkg -d
 		sudo pacman --noconfirm -U davinci-resolve-studio.pkg.tar.zst

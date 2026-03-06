@@ -101,7 +101,7 @@ makeresolvedeb () {
 
 # runtime start
 # menu
-source <(curl -s https://codeberg.org/psygreg/linuxtoys/raw/branch/master/p3/libs/linuxtoys.lib)
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveDeb" --text "Which version do you want to install?" \
 		--column="Version" \
@@ -121,10 +121,10 @@ while true; do
 		cd $HOME
 		mkdir -p resolvedeb
 		cd resolvedeb
-		getresolve 
+		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
+		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		sudo dpkg -i davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		cd ..
@@ -136,10 +136,10 @@ while true; do
 		cd $HOME
 		mkdir -p resolvedeb
 		cd resolvedeb
-		getresolve 
+		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
+		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		sudo dpkg -i davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		cd ..
@@ -149,4 +149,3 @@ while true; do
 	*) echo "Invalid Option" ;;
 	esac
 done
-

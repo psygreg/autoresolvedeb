@@ -126,7 +126,7 @@ inresolve () {
 }
 
 # runtime start
-source <(curl -s https://codeberg.org/psygreg/linuxtoys/raw/branch/master/p3/libs/linuxtoys.lib)
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # menu
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
