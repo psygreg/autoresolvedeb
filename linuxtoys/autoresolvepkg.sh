@@ -15,34 +15,30 @@ while true; do
 	fi
 
 	case $CHOICE in
-	"Free") if [ "$ID" != "cachyos" ]; then
-			cd $HOME
+	"Free") if ! is_cachy; then
+			prep_tmp
 			mkdir -p resolvepkg
 			cd resolvepkg
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/free/PKGBUILD
         	wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/free/davinci-resolve.install
 			sudo_rq
         	makepkg -d
-			sudo pacman --noconfirm -U davinci-resolve.pkg.tar.zst
-			cd ..
-			rm -rf resolvepkg
+			pkg_fromfile davinci-resolve.pkg.tar.zst
 			zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		else
 			sudo_rq
-			sudo pacman -S davinci-resolve
+			pkg_install davinci-resolve
 			zeninf "DaVinci Resolve Free has been installed successfully."
 		fi
 		exit 0 ;;
-	"Studio") cd $HOME
+	"Studio") prep_tmp
 		mkdir -p resolvepkg
 		cd resolvepkg
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/studio/PKGBUILD
         wget https://raw.githubusercontent.com/psygreg/linuxtoys/master/resources/davinci/studio/davinci-resolve.install
 		sudo_rq
         makepkg -d
-		sudo pacman --noconfirm -U davinci-resolve-studio.pkg.tar.zst
-		cd ..
-		rm -rf resolvepkg
+		pkg_fromfile davinci-resolve-studio.pkg.tar.zst
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	"Cancel") break ;;

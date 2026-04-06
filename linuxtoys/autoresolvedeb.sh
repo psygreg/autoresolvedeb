@@ -1,17 +1,8 @@
 #!/bin/bash
-
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # dependency checker
 depcheck () {
-
-    local dependencies=(fakeroot xorriso libqt5gui5 libxcb-dri2-0:i386 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libglib2.0-0t64:i386 libapr1 libaprutil1)
-    for dep in "${dependencies[@]}"; do
-        if dpkg -s "$dep" 2>/dev/null 1>&2; then
-            continue
-        else
-            sudo apt install -y "$dep"
-        fi
-    done
-
+    pkg_install fakeroot xorriso libqt5gui5 libxcb-dri2-0:i386 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libglib2.0-0t64:i386 libapr1 libaprutil1
 }
 
 #create JSON, user agent and download Resolve
@@ -98,10 +89,7 @@ makeresolvedeb () {
 	curl --output makeresolvedeb_${mrdver}_multi.sh.tar.gz https://www.danieltufvesson.com/download/?file=makeresolvedeb/makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 }
-
-# runtime start
 # menu
-source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveDeb" --text "Which version do you want to install?" \
 		--column="Version" \
@@ -118,32 +106,28 @@ while true; do
 	"Free") _upkgname='davinci-resolve'
 		sudo_rq
 	  	depcheck
-		cd $HOME
+		prep_tmp
 		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
-		sudo dpkg -i davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
-		cd ..
-		rm -rf resolvedeb
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		sudo_rq
 	  	depcheck
-		cd $HOME
+		prep_tmp
 		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
-		sudo dpkg -i davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
-		cd ..
-		rm -rf resolvedeb
 		exit 0 ;;
 	"Cancel") break ;;
 	*) echo "Invalid Option" ;;

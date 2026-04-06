@@ -1,27 +1,13 @@
 #!/bin/bash
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # dependency checker
 depcheck () {
-
-    local dependencies=()
-    if [[ "$ID_LIKE" == *suse* ]]; then
-        dependencies=(xorriso curl wget newt libxcb-dri2-0 libxcb-dri2-0-32bit libgthread-2_0-0 libgthread-2_0-0-32bit libapr1 libapr-util1 libQt5Gui5 libglib-2_0-0 libglib-2_0-0-32bit libgio-2_0-0 libgmodule-2_0-0 mesa-libGLU libxcrypt-compat)
+    if is_suse; then
+        pkg_install xorriso curl wget newt libxcb-dri2-0 libxcb-dri2-0-32bit libgthread-2_0-0 libgthread-2_0-0-32bit libapr1 libapr-util1 libQt5Gui5 libglib-2_0-0 libglib-2_0-0-32bit libgio-2_0-0 libgmodule-2_0-0 mesa-libGLU libxcrypt-compat
     else
-        dependencies=(xorriso qt5-qtgui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat)
+        pkg_install xorriso qt5-qtgui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat
     fi
-    for dep in "${dependencies[@]}"; do
-        if rpm -qi "$dep" 2>/dev/null 1>&2; then
-            continue
-        else
-            if [[ "$ID_LIKE" == *suse* ]]; then
-                sudo zypper in "$dep" -y
-            else
-                sudo dnf in "$dep" -y
-            fi
-        fi
-    done
-
 }
-
 #create JSON, user agent and download Resolve
 getresolve () {
   	local pkgname="$_upkgname"
@@ -99,11 +85,6 @@ getresolve () {
 
   	curl -L -o "${_archive_name}.zip" "$_srcurl"
 }
-
-# runtime start
-. /etc/os-release
-source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
-
 # menu
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveRpm" --text "Which version do you want to install?" \
@@ -119,13 +100,14 @@ while true; do
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
-		cd $HOME
+		prep_tmp
 		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
 		sudo_rq
 		depcheck
+		prep_dir /opt/resolve
 		chmod +x ${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
@@ -134,18 +116,17 @@ while true; do
     	sudo mv libglib* disabled
     	sudo mv libgio* disabled
     	sudo mv libgmodule* disabled
-		cd $HOME
-		rm -rf resolverpm
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
-		cd $HOME
+		prep_tmp
 		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
 		unzip ${_archive_name}.zip
 		sudo_rq
 		depcheck
+		prep_dir /opt/resolve
 		chmod +x ./${_archive_run_name}.run
 		export SKIP_PACKAGE_CHECK=1
 		./${_archive_run_name}.run
@@ -154,8 +135,6 @@ while true; do
     	sudo mv libglib* disabled
     	sudo mv libgio* disabled
     	sudo mv libgmodule* disabled
-		cd $HOME
-		rm -rf resolverpm
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	"Cancel") break ;;

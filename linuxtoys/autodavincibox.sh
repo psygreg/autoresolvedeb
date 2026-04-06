@@ -1,24 +1,16 @@
 #!/bin/bash
-
-# Source OS information first
-. /etc/os-release
-
+source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # install dependencies
 davinciboxdeps () {
-
-	local nvGPU=$(lspci | grep -Ei '(nvidia|geforce)')
-	local rxGPU=$(lspci | grep -Ei '(vga|3d)' | grep -Ei '(amd|radeon|amdgpu)')
-	_packages=(podman lshw distrobox)
-    if [[ "$ID_LIKE" == *debian* ]] || [[ "$ID_LIKE" == *ubuntu* ]] || [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
-        if [[ -n "$rxGPU" ]]; then
-            _packages+=(rocm-podman-support)
+	pkg_install podman lshw distrobox
+    if is_debian || is_ubuntu; then
+        if is_amd; then
+            pkg_install rocm-podman-support
 		fi
     fi
-	if [ -n "$nvGPU" ]; then
-        _packages+=(nvidia-container-toolkit)
+	if is_nvidia; then
+        pkg_install nvidia-container-toolkit
     fi
-    _install_
-
 }
 
 #create JSON, user agent and download Resolve
@@ -101,10 +93,9 @@ getresolve () {
 
 # installation
 inresolve () {
-
 	sudo_rq
     davinciboxdeps
-    cd $HOME
+    prep_tmp
     git clone https://github.com/zelikos/davincibox.git
     sleep 1
     cd davincibox
@@ -113,20 +104,13 @@ inresolve () {
     chmod +x setup.sh
     ./setup.sh ${_archive_run_name}.run
 	distrobox enter davincibox -- add-davinci-launcher distrobox
-	local GPU=$(lspci | grep -Ei '(radeon|rx)')
-    if [[ -n "$GPU" ]]; then
+    if is_amd; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
         # stop to ensure usermod takes effect before usage of the software
         distrobox stop davincibox
     fi
     zenity --info --text "Installation successful." --width 300 --height 300
-    cd ..
-    rm -rf davincibox
-
 }
-
-# runtime start
-source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
 # menu
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
