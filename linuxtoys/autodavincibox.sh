@@ -102,7 +102,11 @@ inresolve () {
     getresolve
     unzip ${_archive_name}.zip
     chmod +x setup.sh
-    ./setup.sh ${_archive_run_name}.run
+    if ./setup.sh ${_archive_run_name}.run; then
+		distrobox_created davincibox
+	else
+		fatal "Failed to create container DaVinciBox"
+	fi
 	distrobox enter davincibox -- add-davinci-launcher distrobox
     if is_amd; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
