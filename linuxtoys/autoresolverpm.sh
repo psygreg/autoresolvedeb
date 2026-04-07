@@ -113,9 +113,9 @@ while true; do
 		./${_archive_run_name}.run
     	cd /opt/resolve/libs
     	sudo mkdir disabled
-    	sudo mv libglib* disabled
-    	sudo mv libgio* disabled
-    	sudo mv libgmodule* disabled
+    	move_ libglib* disabled
+    	move_ libgio* disabled
+    	move_ libgmodule* disabled
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
@@ -132,9 +132,9 @@ while true; do
 		./${_archive_run_name}.run
     	cd /opt/resolve/libs
     	sudo mkdir disabled
-    	sudo mv libglib* disabled
-    	sudo mv libgio* disabled
-    	sudo mv libgmodule* disabled
+    	move_ libglib* disabled
+    	move_ libgio* disabled
+    	move_ libgmodule* disabled
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		exit 0 ;;
 	"Cancel") break ;;
