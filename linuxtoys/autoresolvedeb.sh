@@ -106,7 +106,7 @@ while true; do
 	"Free") _upkgname='davinci-resolve'
 		sudo_rq
 	  	depcheck
-		prep_tmp
+		cd $HOME
 		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve
@@ -115,11 +115,13 @@ while true; do
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		pkg_fromfile davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
+		cd $HOME
+        sudo rm -rf resolvedeb
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		sudo_rq
 	  	depcheck
-		prep_tmp
+		cd $HOME
 		mkdir -p resolvedeb
 		cd resolvedeb
 		getresolve
@@ -128,6 +130,8 @@ while true; do
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		pkg_fromfile davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
+		cd $HOME
+        sudo rm -rf resolvedeb
 		exit 0 ;;
 	"Cancel") break ;;
 	*) echo "Invalid Option" ;;

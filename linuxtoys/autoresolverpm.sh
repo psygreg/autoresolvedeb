@@ -100,7 +100,7 @@ while true; do
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
-		prep_tmp
+		cd $HOME
 		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
@@ -117,9 +117,11 @@ while true; do
     	move_ libgio* disabled
     	move_ libgmodule* disabled
 		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
+		cd $HOME
+		sudo rm -rf resolverpm
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
-		prep_tmp
+		cd $HOME
 		mkdir -p resolverpm
 		cd resolverpm
 		getresolve
@@ -136,6 +138,8 @@ while true; do
     	move_ libgio* disabled
     	move_ libgmodule* disabled
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
+		cd $HOME
+		sudo rm -rf resolverpm
 		exit 0 ;;
 	"Cancel") break ;;
 	*) echo "Invalid Option" ;;

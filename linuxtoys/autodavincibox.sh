@@ -95,7 +95,7 @@ getresolve () {
 inresolve () {
 	sudo_rq
     davinciboxdeps
-    prep_tmp
+    cd $HOME
     git clone https://github.com/zelikos/davincibox.git
     sleep 1
     cd davincibox
@@ -114,6 +114,8 @@ inresolve () {
         distrobox stop davincibox
     fi
     zenity --info --text "Installation successful." --width 300 --height 300
+	cd $HOME
+    sudo rm -rf davincibox
 }
 # menu
 while true; do
