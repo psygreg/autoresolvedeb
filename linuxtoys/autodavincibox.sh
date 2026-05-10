@@ -5,7 +5,15 @@ davinciboxdeps () {
 	pkg_install podman lshw distrobox
     if is_debian || is_ubuntu; then
         if is_amd; then
-            pkg_install rocm-podman-support
+			if is_debian; then
+            	pkg_install rocm-podman-support
+			else
+				prep_tmp
+				wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
+				echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/amd-container-toolkit.list
+				sudo apt update
+				pkg_install amd-container-toolkit
+			fi
 		fi
     fi
 	if is_nvidia; then
