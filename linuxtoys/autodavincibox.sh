@@ -17,7 +17,26 @@ davinciboxdeps () {
 		fi
     fi
 	if is_nvidia; then
-        pkg_install nvidia-container-toolkit
+		if is_ubuntu || is_debian; then
+			pkg_install ca-certificates curl gnupg
+			curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  				&& curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    			sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    			sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+			sudo apt update
+		elif is_fedora || is_ostree; then
+			pkg_install curl
+			curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
+  				sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+		elif is_suse; then
+			sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+		fi
+        pkg_install nvidia-container-toolkit 
+		if ! is_arch && ! is_cachy; then
+			pkg_install nvidia-container-toolkit-base libnvidia-container-tools libnvidia-container1
+		else
+			pkg_install libnvidia-container
+		fi
 		sleep 1
 		summon_optimizers
 		nvidia_ctkpatch
