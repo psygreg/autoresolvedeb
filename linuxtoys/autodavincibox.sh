@@ -18,6 +18,9 @@ davinciboxdeps () {
     fi
 	if is_nvidia; then
         pkg_install nvidia-container-toolkit
+		sleep 1
+		summon_optimizers
+		nvidia_ctkpatch
     fi
 }
 
