@@ -26,7 +26,7 @@ davinciboxdeps () {
 			sudo apt update
 		elif is_fedora || is_ostree; then
 			pkg_install curl
-			curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
+			curl -s -L -k https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
   				sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
 		elif is_suse; then
 			sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
