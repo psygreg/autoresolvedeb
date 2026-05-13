@@ -1,5 +1,5 @@
 #!/bin/bash
-source <(curl -s https://raw.githubusercontent.com/psygreg/linuxtoys/master/p3/libs/linuxtoys.lib)
+source "$SCRIPT_DIR/libs/linuxtoys.lib"
 # dependency checker
 depcheck () {
     if is_suse; then
