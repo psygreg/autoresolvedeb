@@ -138,6 +138,12 @@ inresolve () {
 		fatal "Failed to create container DaVinciBox"
 	fi
 	distrobox enter davincibox -- add-davinci-launcher distrobox
+	local desktop_file="$HOME/.local/share/applications/DaVinciResolve.desktop"
+	prep_edit "$desktop_file"
+	if [ -f "$desktop_file" ]; then
+		sed -i 's|^Exec=.*|Exec=distrobox-enter -n davincibox -- /opt/resolve/bin/resolve|' "$desktop_file" || fatal "Failed to patch app menu entry"
+	fi
+	
     if is_amd; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
         # stop to ensure usermod takes effect before usage of the software
