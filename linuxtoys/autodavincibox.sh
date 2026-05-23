@@ -4,6 +4,10 @@ source "$SCRIPT_DIR/libs/linuxtoys.lib"
 davinciboxdeps () {
 	pkg_install podman lshw distrobox
     if is_debian || is_ubuntu; then
+		if is_ubuntu; then
+        	sudo add-apt-repository ppa:michel-slm/distrobox -y
+        	sudo apt update  
+    	fi
         if is_amd; then
 			if is_debian; then
             	pkg_install rocm-podman-support
