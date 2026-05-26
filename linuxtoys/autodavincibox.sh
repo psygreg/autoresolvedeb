@@ -8,7 +8,7 @@ davinciboxdeps () {
         	sudo add-apt-repository ppa:michel-slm/distrobox -y
         	sudo apt update  
     	fi
-        if is_amd; then
+        if is_amd && ! is_nvidia; then
 			if is_debian; then
             	pkg_install rocm-podman-support
 			else
@@ -152,7 +152,7 @@ inresolve () {
 		sed -i 's|^Exec=.*|Exec=distrobox-enter -n davincibox -- /opt/resolve/bin/resolve|' "$desktop_file" || fatal "Failed to patch app menu entry"
 	fi
 	
-    if is_amd; then
+    if is_amd && ! is_nvidia; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
         # stop to ensure usermod takes effect before usage of the software
         distrobox stop davincibox
