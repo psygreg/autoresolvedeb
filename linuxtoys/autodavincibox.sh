@@ -32,7 +32,7 @@ davinciboxdeps () {
     			sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
     			sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 			sudo apt update
-		elif is_fedora || is_ostree; then
+		elif is_fedora || is_ostree || is_rhel; then
 			pkg_install curl
 			curl -s -L -k https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
   				sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
