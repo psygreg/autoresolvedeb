@@ -15,7 +15,7 @@ davinciboxdeps () {
 				prep_tmp
 				wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
 				_codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"
-				if [ "$_codename" != "noble" ] && [ "$_codename" != "resolute" ]; then
+				if [ "$_codename" != "noble" ]; then # change when rocm supports codename of resolute
 					_codename="noble"
 				fi
 				echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ ${_codename} main" | sudo tee /etc/apt/sources.list.d/amd-container-toolkit.list
