@@ -134,7 +134,7 @@ inresolve () {
 	sudo_rq
     davinciboxdeps
     cd $HOME
-    git clone https://github.com/psygreg/davincibox.git
+    git clone https://github.com/zelikos/davincibox.git
     sleep 1
     cd davincibox
     getresolve
