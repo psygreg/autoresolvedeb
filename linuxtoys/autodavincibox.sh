@@ -2,11 +2,10 @@
 source "$SCRIPT_DIR/libs/linuxtoys.lib"
 # install dependencies
 davinciboxdeps () {
-	pkg_install podman lshw distrobox
     if is_debian || is_ubuntu; then
 		if is_ubuntu; then
         	sudo add-apt-repository ppa:michel-slm/distrobox -y
-        	sudo apt update  
+        	sudo apt update 
     	fi
         if is_amd && ! is_nvidia; then
 			if is_debian; then
@@ -49,6 +48,7 @@ davinciboxdeps () {
 		summon_optimizers
 		nvidia_ctkpatch
     fi
+	pkg_install podman lshw distrobox
 }
 
 #create JSON, user agent and download Resolve
