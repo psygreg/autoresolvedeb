@@ -1,5 +1,6 @@
 #!/bin/bash
 source "$SCRIPT_DIR/libs/linuxtoys.lib"
+_lang_
 # dependency checker
 depcheck () {
     pkg_install fakeroot xorriso libqt5gui5 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libapr1 libaprutil1
@@ -9,17 +10,12 @@ depcheck () {
 check_disk_space () {
 	local pkgname="$1"
 	local required_space_gb=0
-	local product_name=""
 
 	# set required space based on package type
 	if [ "$pkgname" == "davinci-resolve" ]; then
 		required_space_gb=12
-		product_name="DaVinci Resolve (Free)"
 	elif [ "$pkgname" == "davinci-resolve-studio" ]; then
 		required_space_gb=28
-		product_name="DaVinci Resolve Studio"
-	else
-		fatal "Unknown package: $pkgname"
 	fi
 
 	local required_space_kb=$((required_space_gb * 1024 * 1024))
@@ -28,14 +24,12 @@ check_disk_space () {
 
 	# check home directory
 	if [ "$home_available_kb" -lt "$required_space_kb" ]; then
-		local available_gb=$((home_available_kb / 1024 / 1024))
-		fatal "$product_name requires ${required_space_gb}GB in \$HOME, but only ${available_gb}GB available."
+		fatal "$outofspace"
 	fi
 
 	# check root filesystem
 	if [ "$root_available_kb" -lt "$required_space_kb" ]; then
-		local available_gb=$((root_available_kb / 1024 / 1024))
-		fatal "$product_name requires ${required_space_gb}GB in /, but only ${available_gb}GB available."
+		fatal "$outofspace"
 	fi
 }
 
