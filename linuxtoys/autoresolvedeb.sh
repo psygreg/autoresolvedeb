@@ -5,6 +5,40 @@ depcheck () {
     pkg_install fakeroot xorriso libqt5gui5 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libapr1 libaprutil1
 }
 
+# check if sufficient disk space is available
+check_disk_space () {
+	local pkgname="$1"
+	local required_space_gb=0
+	local product_name=""
+
+	# set required space based on package type
+	if [ "$pkgname" == "davinci-resolve" ]; then
+		required_space_gb=12
+		product_name="DaVinci Resolve (Free)"
+	elif [ "$pkgname" == "davinci-resolve-studio" ]; then
+		required_space_gb=28
+		product_name="DaVinci Resolve Studio"
+	else
+		fatal "Unknown package: $pkgname"
+	fi
+
+	local required_space_kb=$((required_space_gb * 1024 * 1024))
+	local home_available_kb=$(df "$HOME" | awk 'NR==2 {print $4}')
+	local root_available_kb=$(df / | awk 'NR==2 {print $4}')
+
+	# check home directory
+	if [ "$home_available_kb" -lt "$required_space_kb" ]; then
+		local available_gb=$((home_available_kb / 1024 / 1024))
+		fatal "$product_name requires ${required_space_gb}GB in \$HOME, but only ${available_gb}GB available."
+	fi
+
+	# check root filesystem
+	if [ "$root_available_kb" -lt "$required_space_kb" ]; then
+		local available_gb=$((root_available_kb / 1024 / 1024))
+		fatal "$product_name requires ${required_space_gb}GB in /, but only ${available_gb}GB available."
+	fi
+}
+
 #create JSON, user agent and download Resolve
 getresolve () {
   	local pkgname="$_upkgname"
@@ -104,6 +138,7 @@ while true; do
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
+		check_disk_space "$_upkgname"
 		sudo_rq
 	  	depcheck
 		cd $HOME
@@ -119,6 +154,7 @@ while true; do
         sudo rm -rf resolvedeb
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
+		check_disk_space "$_upkgname"
 		sudo_rq
 	  	depcheck
 		cd $HOME
