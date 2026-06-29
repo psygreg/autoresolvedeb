@@ -20,6 +20,9 @@ davinciboxdeps () {
 				fi
 				echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ ${_codename} main" | sudo tee /etc/apt/sources.list.d/amd-container-toolkit.list
 				sudo apt update
+				if ! lsmod | grep amdgpu; then
+					sudo modprobe amdgpu || fatal "Failed to load amdgpu kernel module."
+				fi
 				pkg_install amd-container-toolkit
 			fi
 		fi
