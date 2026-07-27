@@ -113,7 +113,7 @@ getresolve () {
 
 # get makeresolvedeb
 makeresolvedeb () {
-	mrdver='1.8.2'
+	mrdver='1.10.0'
 	curl --output makeresolvedeb_${mrdver}_multi.sh.tar.gz https://www.danieltufvesson.com/download/?file=makeresolvedeb/makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 }
@@ -159,6 +159,7 @@ while true; do
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		pkg_fromfile davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve-studio-data_${_pkgver}-mrd${mrdver}_amd64.deb
 		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
 		cd $HOME
         sudo rm -rf resolvedeb
