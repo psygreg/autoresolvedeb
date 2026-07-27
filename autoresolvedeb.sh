@@ -94,7 +94,7 @@ getresolve () {
 
 # get makeresolvedeb
 makeresolvedeb () {
-	mrdver='1.8.2'
+	mrdver='1.10.0'
 	curl --output makeresolvedeb_${mrdver}_multi.sh.tar.gz https://www.danieltufvesson.com/download/?file=makeresolvedeb/makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
 }
@@ -137,6 +137,7 @@ while :; do
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run 
 		sudo dpkg -i davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
+		sudo dpkg -i davinci-resolve-studio-data_${_pkgver}-mrd${mrdver}_amd64.deb
 		whiptail --title "AutoResolveDeb" --msgbox "Installation succesful." 8 78
 		cd ..
 		rm -rf resolvedeb
