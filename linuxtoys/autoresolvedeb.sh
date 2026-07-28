@@ -113,9 +113,29 @@ getresolve () {
 
 # get makeresolvedeb
 makeresolvedeb () {
-	mrdver='1.10.0'
-	curl --output makeresolvedeb_${mrdver}_multi.sh.tar.gz https://www.danieltufvesson.com/download/?file=makeresolvedeb/makeresolvedeb_${mrdver}_multi.sh.tar.gz;
-	tar zxvf makeresolvedeb_${mrdver}_multi.sh.tar.gz;
+	local page="https://www.danieltufvesson.com/makeresolvedeb"
+    local download_base="https://www.danieltufvesson.com/download/?file=makeresolvedeb"
+    local archive
+    archive=$(
+        curl -fsSL "$page" |
+        grep -oE 'makeresolvedeb_[0-9]+(\.[0-9]+)+_multi\.sh\.tar\.gz' |
+        head -n1
+    )
+    if [[ -z "$archive" ]]; then
+        die "Could not find the latest MakeResolveDeb archive."
+    fi
+	mrdver="${archive#makeresolvedeb_}"
+    mrdver="${mrdver%_multi.sh.tar.gz}"
+    echo "Downloading ${archive}..."
+    curl -fL \
+        --output "$archive" \
+        "${download_base}/${archive}" ||
+        {
+            die "Failed to download $archive."
+        }
+    tar zxvf "$archive" || {
+        die "Failed to extract $archive."
+    }
 }
 # menu
 while true; do
