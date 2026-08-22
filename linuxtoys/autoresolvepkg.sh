@@ -122,10 +122,11 @@ while true; do
 	fi
 
 	case $CHOICE in
-	"Free") if ! is_cachy; then
+	"Free") _upkgname='davinci-resolve'
+		check_disk_space "$_upkgname"
+		if ! is_cachy; then
 			askpass
 			depcheck
-			_upkgname='davinci-resolve'
 			prep_tmp_noram
 			git clone https://aur.archlinux.org/davinci-resolve.git && cd davinci-resolve
 			getresolve
@@ -141,6 +142,7 @@ while true; do
 		fi
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
+		check_disk_space "$_upkgname"
 		askpass
 		depcheck
 		prep_tmp_noram
