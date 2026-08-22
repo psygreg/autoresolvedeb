@@ -8,6 +8,13 @@ depcheck () {
     else
         pkg_install xorriso qt5-qtbase-gui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat
     fi
+	if is_amd; then
+		call_script rocm
+	elif is_intel; then
+		call_script icr
+	elif is_nvidia && ! nvidia-smi; then
+		die "Install Nvidia drivers before proceeeding."
+	fi
 }
 
 # check if sufficient disk space is available
@@ -130,12 +137,10 @@ while true; do
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
 		check_disk_space "$_upkgname"
-		cd $HOME
-		mkdir -p resolverpm
-		cd resolverpm
+		prep_tmp_noram
 		getresolve
 		unzip ${_archive_name}.zip
-		sudo_rq
+		askpass
 		depcheck
 		prep_dir /opt/resolve
 		chmod +x ${_archive_run_name}.run
@@ -146,18 +151,14 @@ while true; do
     	move_ libglib* disabled
     	move_ libgio* disabled
     	move_ libgmodule* disabled
-		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
-		cd $HOME
-		sudo rm -rf resolverpm
+		info "DaVinci Resolve Free has been installed successfully."
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		check_disk_space "$_upkgname"
-		cd $HOME
-		mkdir -p resolverpm
-		cd resolverpm
+		prep_tmp_noram
 		getresolve
 		unzip ${_archive_name}.zip
-		sudo_rq
+		askpass
 		depcheck
 		prep_dir /opt/resolve
 		chmod +x ./${_archive_run_name}.run
@@ -168,9 +169,7 @@ while true; do
     	move_ libglib* disabled
     	move_ libgio* disabled
     	move_ libgmodule* disabled
-		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
-		cd $HOME
-		sudo rm -rf resolverpm
+		info "DaVinci Resolve Studio has been installed successfully."
 		exit 0 ;;
 	"Cancel") break ;;
 	*) echo "Invalid Option" ;;

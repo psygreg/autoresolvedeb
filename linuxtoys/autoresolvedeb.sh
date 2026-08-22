@@ -4,6 +4,13 @@ _lang_
 # dependency checker
 depcheck () {
     pkg_install fakeroot xorriso libqt5gui5 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libapr1 libaprutil1
+	if is_amd; then
+		call_script rocm
+	elif is_intel; then
+		call_script icr
+	elif is_nvidia && ! nvidia-smi; then
+		die "Install Nvidia drivers before proceeeding."
+	fi
 }
 
 # check if sufficient disk space is available
@@ -153,36 +160,28 @@ while true; do
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
 		check_disk_space "$_upkgname"
-		sudo_rq
+		askpass
 	  	depcheck
-		cd $HOME
-		mkdir -p resolvedeb
-		cd resolvedeb
+		prep_tmp_noram
 		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		pkg_fromfile davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
-		zenity --info --text "DaVinci Resolve Free has been installed successfully." --width 300 --height 300
-		cd $HOME
-        sudo rm -rf resolvedeb
+		info "DaVinci Resolve Free has been installed successfully."
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		check_disk_space "$_upkgname"
-		sudo_rq
+		askpass
 	  	depcheck
-		cd $HOME
-		mkdir -p resolvedeb
-		cd resolvedeb
+		prep_tmp_noram
 		getresolve
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
 		pkg_fromfile davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
 		pkg_fromfile davinci-resolve-studio-data_${_pkgver}-mrd${mrdver}_amd64.deb
-		zenity --info --text "DaVinci Resolve Studio has been installed successfully." --width 300 --height 300
-		cd $HOME
-        sudo rm -rf resolvedeb
+		info "DaVinci Resolve Studio has been installed successfully."
 		exit 0 ;;
 	"Cancel") break ;;
 	*) echo "Invalid Option" ;;
