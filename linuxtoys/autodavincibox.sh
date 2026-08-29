@@ -1,6 +1,6 @@
 #!/bin/bash
 source "$SCRIPT_DIR/libs/linuxtoys.lib"
-_lang_
+
 # install dependencies
 davinciboxdeps () {
     if is_debian || is_ubuntu; then
@@ -52,7 +52,7 @@ davinciboxdeps () {
 		summon_optimizers
 		nvidia_ctkpatch
     fi
-	pkg_install podman lshw distrobox
+	pkg_install podman lshw distrobox unzip
 }
 
 # check if sufficient disk space is available
@@ -163,12 +163,11 @@ getresolve () {
 # installation
 inresolve () {
 	check_disk_space "$_upkgname"
-	sudo_rq
+	askpass
     davinciboxdeps
-    cd $HOME
-    git clone https://github.com/zelikos/davincibox.git
-    sleep 1
-    cd davincibox
+    prep_tmp_noram
+    git clone https://github.com/zelikos/davincibox.git || die "Failed to download DaVinciBox."
+    cd davincibox || die "Failed to enter DaVinciBox directory."
     getresolve
     unzip ${_archive_name}.zip
     chmod +x setup.sh
@@ -189,9 +188,7 @@ inresolve () {
         # stop to ensure usermod takes effect before usage of the software
         distrobox stop davincibox
     fi
-    zenity --info --text "Installation successful." --width 300 --height 300
-	cd $HOME
-    sudo rm -rf davincibox
+    info "$finishmsg"
 }
 # menu
 while true; do
