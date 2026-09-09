@@ -167,7 +167,8 @@ while true; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
-		pkg_fromfile davinci-resolve_${_pkgver}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve_${_filever}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve-data_${_filever}-mrd${mrdver}_amd64.deb
 		info "DaVinci Resolve Free has been installed successfully."
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
@@ -179,8 +180,8 @@ while true; do
 		makeresolvedeb
 		unzip ${_archive_name}.zip
 		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
-		pkg_fromfile davinci-resolve-studio_${_pkgver}-mrd${mrdver}_amd64.deb
-		pkg_fromfile davinci-resolve-studio-data_${_pkgver}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve-studio_${_filever}-mrd${mrdver}_amd64.deb
+		pkg_fromfile davinci-resolve-studio-data_${_filever}-mrd${mrdver}_amd64.deb
 		info "DaVinci Resolve Studio has been installed successfully."
 		exit 0 ;;
 	"Cancel") break ;;
