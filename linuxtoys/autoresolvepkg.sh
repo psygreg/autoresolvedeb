@@ -109,6 +109,51 @@ getresolve () {
   	curl -L -o "${_archive_name}.zip" "$_srcurl"
 }
 
+patch_aur_pkgbuild () {
+	local pkgbuild="${1:-PKGBUILD}"
+	local target_ver="${_filever:-$_pkgver}"
+	local archive="${_archive_name}.zip"
+
+	[[ -f "$pkgbuild" ]] || die "PKGBUILD not found: $pkgbuild"
+	[[ -n "$target_ver" ]] || die "Could not determine DaVinci Resolve package version."
+	[[ -s "$archive" ]] || die "DaVinci Resolve archive not found: $archive"
+
+	local current_ver
+	current_ver=$(sed -n 's/^pkgver=//p' "$pkgbuild" | head -n1)
+	if [[ "$current_ver" != "$target_ver" ]]; then
+		sed -i -E "s/^pkgver=.*/pkgver=${target_ver}/" "$pkgbuild"
+		sed -i -E 's/^pkgrel=.*/pkgrel=1/' "$pkgbuild"
+	fi
+
+	# Resolve bundles versioned GLib/libc++ files. Older PKGBUILDs hardcode
+	# those versions, which breaks whenever Blackmagic updates the bundle.
+	sed -i -E \
+		-e 's|libglib-2\.0\.so\.0\{,\.[0-9.]+\}|libglib-2.0.so.0*|g' \
+		-e 's|libgio-2\.0\.so\.0\{,\.[0-9.]+\}|libgio-2.0.so.0*|g' \
+		-e 's|libgmodule-2\.0\.so\.0\{,\.[0-9.]+\}|libgmodule-2.0.so.0*|g' \
+		-e 's|libgobject-2\.0\.so\.0\{,\.[0-9.]+\}|libgobject-2.0.so.0*|g' \
+		-e 's|libc\+\+\.so\.1\{,\.[0-9.]+\}|libc++.so.1*|g' \
+		-e 's|libc\+\+abi\.so\.1\{,\.[0-9.]+\}|libc++abi.so.1*|g' \
+		-e 's|rm squashfs-root/libs/libglib-2\.0\.so\.0\*|rm -f squashfs-root/libs/libglib-2.0.so.0*|' \
+		"$pkgbuild"
+
+	# Resolve 21.1 expects /opt/resolve/Immersive to exist at startup.
+	# Do nothing once the AUR PKGBUILD creates it itself.
+	if ! grep -Eq '/Immersive"?([[:space:]]|$)' "$pkgbuild"; then
+		if grep -q 'Apple Immersive/Calibration' "$pkgbuild"; then
+			sed -i '/Apple Immersive\/Calibration/a\    install -d -m 0755 "${pkgdir}/opt/${_pkgname}/Immersive"' "$pkgbuild"
+		else
+			die "Could not patch the Resolve Immersive directory into PKGBUILD."
+		fi
+	fi
+
+	# The downloaded archive is authoritative; keep makepkg verification enabled
+	# while replacing the stale AUR checksum after a Blackmagic version bump.
+	local archive_sha
+	archive_sha=$(sha256sum "$archive" | awk '{print $1}')
+	sed -i -E "0,/^[[:space:]]*sha256sums=\('[^']*'/s||sha256sums=('${archive_sha}'|" "$pkgbuild"
+}
+
 while true; do
 	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
 		--column="Version" \
@@ -130,8 +175,9 @@ while true; do
 			prep_tmp_noram
 			git clone https://aur.archlinux.org/davinci-resolve.git && cd davinci-resolve
 			getresolve
+			patch_aur_pkgbuild
 			echo "Starting package build. This may take a while..."
-			SRCDEST="$PWD" makepkg -si || die "Failed to build package"
+			makepkg -si || die "Failed to build package"
 			_append_transmap "pkg davinci-resolve"
 			info "$finishmsg"
 		else
@@ -148,8 +194,9 @@ while true; do
 		prep_tmp_noram
 		git clone https://aur.archlinux.org/davinci-resolve-studio.git && cd davinci-resolve-studio
 		getresolve
+		patch_aur_pkgbuild
 		echo "Starting package build. This may take a while..."
-		SRCDEST="$PWD" makepkg -si || die "Failed to build package"
+		makepkg -si || die "Failed to build package"
 		_append_transmap "pkg davinci-resolve-studio"
 		info "$finishmsg"
 		exit 0 ;;
