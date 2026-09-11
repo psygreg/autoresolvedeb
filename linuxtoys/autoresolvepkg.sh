@@ -131,7 +131,7 @@ while true; do
 			git clone https://aur.archlinux.org/davinci-resolve.git && cd davinci-resolve
 			getresolve
 			echo "Starting package build. This may take a while..."
-			makepkg -si || die "Failed to build package"
+			SRCDEST="$PWD" makepkg -si || die "Failed to build package"
 			_append_transmap "pkg davinci-resolve"
 			info "$finishmsg"
 		else
@@ -149,7 +149,7 @@ while true; do
 		git clone https://aur.archlinux.org/davinci-resolve-studio.git && cd davinci-resolve-studio
 		getresolve
 		echo "Starting package build. This may take a while..."
-		makepkg -si || die "Failed to build package"
+		SRCDEST="$PWD" makepkg -si || die "Failed to build package"
 		_append_transmap "pkg davinci-resolve-studio"
 		info "$finishmsg"
 		exit 0 ;;
