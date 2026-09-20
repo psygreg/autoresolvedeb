@@ -6,7 +6,7 @@ davinciboxdeps () {
     if is_debian || is_ubuntu; then
 		if is_ubuntu; then
         	sudo add-apt-repository ppa:michel-slm/distrobox -y
-        	sudo apt update 
+        	sudo apt update
     	fi
         if is_amd && ! is_nvidia; then
 			if is_debian; then
@@ -42,7 +42,7 @@ davinciboxdeps () {
 		elif is_suse; then
 			sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
 		fi
-        pkg_install nvidia-container-toolkit 
+        pkg_install nvidia-container-toolkit
 		if ! is_arch && ! is_cachy; then
 			pkg_install nvidia-container-toolkit-base libnvidia-container-tools libnvidia-container1
 		else
@@ -52,7 +52,11 @@ davinciboxdeps () {
 		summon_optimizers
 		nvidia_ctkpatch
     fi
-	pkg_install podman lshw distrobox unzip
+    local _container_deps=(podman lshw distrobox unzip)
+    if [ -d /dev/vboxusb ]; then
+        _container_deps+=(crun)
+    fi
+    pkg_install "${_container_deps[@]}"
 }
 
 # check if sufficient disk space is available
@@ -182,7 +186,7 @@ inresolve () {
 	if [ -f "$desktop_file" ]; then
 		sed -i 's|^Exec=.*|Exec=distrobox-enter -n davincibox -- /opt/resolve/bin/resolve|' "$desktop_file" || fatal "Failed to patch app menu entry"
 	fi
-	
+
     if is_amd && ! is_nvidia; then
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
         # stop to ensure usermod takes effect before usage of the software
