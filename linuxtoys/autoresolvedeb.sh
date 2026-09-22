@@ -4,7 +4,7 @@ _lang_
 # dependency checker
 depcheck () {
     pkg_install fakeroot xorriso libqt5gui5 libxcb-dri2-0 libcrypt1 libglu1-mesa libglib2.0-0t64 libapr1 libaprutil1
-	if is_rocm_compatible; then
+	if is_rocm_capable; then
 		call_script rocm
 	elif is_intel; then
 		call_script icr

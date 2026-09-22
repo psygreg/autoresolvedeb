@@ -8,7 +8,7 @@ davinciboxdeps () {
         	sudo add-apt-repository ppa:michel-slm/distrobox -y
         	sudo apt update
     	fi
-        if is_rocm_compatible && ! is_nvidia; then
+        if is_rocm_capable && ! is_nvidia; then
 			if is_debian; then
             	pkg_install rocm-podman-support
 			else

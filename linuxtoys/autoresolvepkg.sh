@@ -4,7 +4,7 @@ source "$SCRIPT_DIR/libs/linuxtoys.lib"
 # menu
 depcheck () {
 	pkg_install fakeroot debugedit
-	if is_rocm_compatible; then
+	if is_rocm_capable; then
 		call_script rocm
 	elif is_intel; then
 		call_script icr
