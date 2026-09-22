@@ -8,7 +8,7 @@ depcheck () {
     else
         pkg_install xorriso qt5-qtbase-gui curl wget newt libxcb libxcb.i686 glib2 glib2.i686 apr apr-util mesa-libGLU libxcrypt-compat
     fi
-	if is_amd; then
+	if is_rocm_compatible; then
 		call_script rocm
 	elif is_intel; then
 		call_script icr
