@@ -10,7 +10,7 @@ davinciboxdeps () {
     	fi
         if is_rocm_capable && ! is_nvidia; then
 			if is_debian; then
-            	pkg_install rocm-podman-support
+            	pkg_install --no-recommends rocm-podman-support
 			else
 				prep_tmp
 				wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
