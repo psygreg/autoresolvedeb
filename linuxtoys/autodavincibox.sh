@@ -77,12 +77,12 @@ check_disk_space () {
 
 	# check home directory
 	if [ "$home_available_kb" -lt "$required_space_kb" ]; then
-		fatal "$outofspace"
+		fatal "$outofspace -- $HOME -- $required_space_gb"
 	fi
 
 	# check root filesystem
 	if [ "$root_available_kb" -lt "$required_space_kb" ]; then
-		fatal "$outofspace"
+		fatal "$outofspace -- / 'root' -- $required_space_gb"
 	fi
 }
 
