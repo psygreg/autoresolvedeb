@@ -174,6 +174,10 @@ inresolve () {
     cd davincibox || die "Failed to enter DaVinciBox directory."
     getresolve
     unzip ${_archive_name}.zip
+    if is_nvidia; then
+        # fix #1406 - upstream "unresolvable CDI devices" bug
+        sed -i 's|--additional-flags "--device nvidia.com/gpu=all"|--additional-flags "--gpus all"|' setup.sh
+    fi
     chmod +x setup.sh
     if ./setup.sh ${_archive_run_name}.run; then
 		distrobox_created davincibox
