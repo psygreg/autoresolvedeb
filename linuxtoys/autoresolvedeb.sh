@@ -115,7 +115,7 @@ getresolve () {
     		--compressed \
     		"$_siteurl")
 
-  	curl -L -o "${_archive_name}.zip" "$_srcurl"
+  	curl -L -o "${_archive_name}.zip" "$_srcurl" || die "Failed to download DaVinci Resolve"
 }
 
 # get makeresolvedeb
