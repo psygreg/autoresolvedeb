@@ -198,6 +198,9 @@ while true; do
 		echo "Starting package build. This may take a while..."
 		makepkg -si || die "Failed to build package"
 		_append_transmap "pkg davinci-resolve-studio"
+        export AUTO_DVNAT=1
+        call_script resolveaac
+        call_script resolvehw
 		info "$finishmsg"
 		exit 0 ;;
 	"Cancel") break ;;

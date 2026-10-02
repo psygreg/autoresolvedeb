@@ -169,6 +169,9 @@ while true; do
     	move_ libglib* disabled
     	move_ libgio* disabled
     	move_ libgmodule* disabled
+        export AUTO_DVNAT=1
+        call_script resolveaac
+        call_script resolvehw
 		info "DaVinci Resolve Studio has been installed successfully."
 		exit 0 ;;
 	"Cancel") break ;;
