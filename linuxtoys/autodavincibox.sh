@@ -199,7 +199,7 @@ inresolve () {
 
     if [ "$_upkgname" = "davinci-resolve-studio" ]; then
         export AUTO_DVBOX=1
-        call_script resolveaac
+        # call_script resolveaac
         call_script resolvehw
     fi
 

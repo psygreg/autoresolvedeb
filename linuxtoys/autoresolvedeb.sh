@@ -183,7 +183,7 @@ while true; do
 		pkg_fromfile davinci-resolve-studio_${_filever}-mrd${mrdver}_amd64.deb
 		pkg_fromfile davinci-resolve-studio-data_${_filever}-mrd${mrdver}_amd64.deb
         export AUTO_DVNAT=1
-        call_script resolveaac
+        # call_script resolveaac
         call_script resolvehw
 		info "DaVinci Resolve Studio has been installed successfully."
 		exit 0 ;;
