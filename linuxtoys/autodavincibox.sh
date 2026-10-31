@@ -72,17 +72,41 @@ check_disk_space () {
 	fi
 
 	local required_space_kb=$((required_space_gb * 1024 * 1024))
-	home_available_kb=$(df --output=avail -k "$HOME" | tail -n 1 | tr -d ' ')
-	root_available_kb=$(df --output=avail -k / | tail -n 1 | tr -d ' ')
+
+	# On immutable OSes using composeFS (and similar), / is a tiny read-only
+	# mount with no usable space; the writable root lives at /var. Detect this
+	# and check /var instead of / as the 'root' partition.
+	local root_path="/"
+	if [ -d /var ] && { [ -f /run/ostree-booted ] || findmnt -n -o FSTYPE --target / 2>/dev/null | grep -qiE 'composefs|erofs|overlay'; }; then
+		root_path="/var"
+	fi
+
+	# --output=avail keeps the unit and the column layout stable regardless
+	# of DF_BLOCK_SIZE or POSIXLY_CORRECT, unlike parsing plain df.
+	local home_available_kb root_available_kb
+	home_available_kb=$(df --output=avail -k "$HOME" 2>/dev/null | tail -n 1 | tr -d ' ')
+	root_available_kb=$(df --output=avail -k "$root_path" 2>/dev/null | tail -n 1 | tr -d ' ')
+
+	# An unmeasurable filesystem must not pass the check silently: the tests
+	# below error out on an empty value and are then treated as false. Warn
+	# and skip only that path; later writes still fail loudly on their own.
+	if ! [[ "$home_available_kb" =~ ^[0-9]+$ ]]; then
+		warn "Could not determine available storage space on $HOME; skipping that check."
+		home_available_kb=""
+	fi
+	if ! [[ "$root_available_kb" =~ ^[0-9]+$ ]]; then
+		warn "Could not determine available storage space on $root_path; skipping that check."
+		root_available_kb=""
+	fi
 
 	# check home directory
-	if [ "$home_available_kb" -lt "$required_space_kb" ]; then
-		fatal "$outofspace\n$HOME -- $required_space_gb GB"
+	if [ -n "$home_available_kb" ] && [ "$home_available_kb" -lt "$required_space_kb" ]; then
+		fatal "$outofspace\n$HOME -- $required_space_gb GB (found $home_available_kb KB free)"
 	fi
 
 	# check root filesystem
-	if [ "$root_available_kb" -lt "$required_space_kb" ]; then
-		fatal "$outofspace\n/ 'root' -- $required_space_gb GB"
+	if [ -n "$root_available_kb" ] && [ "$root_available_kb" -lt "$required_space_kb" ]; then
+		fatal "$outofspace\n$root_path 'root' -- $required_space_gb GB (found $root_available_kb KB free)"
 	fi
 }
 
@@ -195,6 +219,11 @@ inresolve () {
         distrobox enter davincibox -- bash -c "sudo dnf install -y rocm-comgr rocm-runtime rccl rocalution rocblas rocfft rocm-smi rocsolver rocsparse rocm-device-libs rocminfo rocm-hip hiprand rocm-opencl clinfo && sudo usermod -aG render,video \$USER"
         # stop to ensure usermod takes effect before usage of the software
         distrobox stop davincibox
+    elif is_rusticl_capable && ! is_rocm_capable; then
+        RUSTICL_CONTAINER=davincibox call_script rusticl || fatal "Failed to install Rusticl in DaVinciBox"
+        if [[ -f "$desktop_file" ]]; then
+            sed -i 's|^Exec=.*|Exec=distrobox-enter -n davincibox -- env RUSTICL_ENABLE=radeonsi /opt/resolve/bin/resolve|' "$desktop_file" || fatal "Failed to configure Rusticl launcher"
+        fi
     fi
 
     if [ "$_upkgname" = "davinci-resolve-studio" ]; then
