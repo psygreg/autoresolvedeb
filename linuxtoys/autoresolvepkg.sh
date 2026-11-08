@@ -180,6 +180,19 @@ patch_aur_pkgbuild () {
 		fi
 	fi
 
+	# The AUR prepare() runs patchelf on every ELF under the extracted bundle.
+	# Blackmagic ships bin/Plugins/ChromiumEmbeddedFramework/chrome-sandbox
+	# with its .note.ABI-tag already moved by an old patchelf while the
+	# PT_NOTE segment was left pointing at the old spot, so every patchelf
+	# currently in the repos aborts on it with "cannot normalize PT_NOTE
+	# segment: non-contiguous SHT_NOTE sections" and kills the whole build.
+	# It only links libc and keeps the vendor's working $ORIGIN rpath, so it
+	# does not need the loop's rpath at all; exclude it from patchelf by name.
+	sed -i -E 's|find "squashfs-root" -type f -size -32M -print0|find "squashfs-root" -type f -size -32M ! -name "chrome-sandbox" -print0|' "$pkgbuild"
+	if ! grep -q '! -name "chrome-sandbox"' "$pkgbuild"; then
+		die "Could not patch the chrome-sandbox patchelf exclusion into PKGBUILD."
+	fi
+
 	# The downloaded archive is authoritative; keep makepkg verification enabled
 	# while replacing the stale AUR checksum after a Blackmagic version bump.
 	local archive_sha
