@@ -5,23 +5,23 @@ source "$SCRIPT_DIR/libs/linuxtoys.lib"
 davinciboxdeps () {
     if is_debian || is_ubuntu; then
 		if is_ubuntu; then
-        	sudo add-apt-repository ppa:michel-slm/distrobox -y
-        	sudo apt update
+        	sudo_ add-apt-repository ppa:michel-slm/distrobox -y
+        	apt_transaction sudo_ apt-get update
     	fi
         if is_rocm_capable && ! is_nvidia; then
 			if is_debian; then
             	pkg_install --no-recommends rocm-podman-support
 			else
 				prep_tmp
-				wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
+				wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo_ tee /etc/apt/keyrings/rocm.gpg > /dev/null
 				_codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"
 				if [ "$_codename" != "noble" ]; then # change when rocm supports codename of resolute
 					_codename="noble"
 				fi
-				echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ ${_codename} main" | sudo tee /etc/apt/sources.list.d/amd-container-toolkit.list
-				sudo apt update
+				echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ ${_codename} main" | sudo_ tee /etc/apt/sources.list.d/amd-container-toolkit.list
+				apt_transaction sudo_ apt-get update
 				if ! lsmod | grep amdgpu; then
-					sudo modprobe amdgpu || fatal "Failed to load amdgpu kernel module."
+					sudo_ modprobe amdgpu || fatal "Failed to load amdgpu kernel module."
 				fi
 				pkg_install amd-container-toolkit
 			fi
@@ -30,17 +30,17 @@ davinciboxdeps () {
 	if is_nvidia; then
 		if is_ubuntu || is_debian; then
 			pkg_install ca-certificates curl gnupg
-			curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+			curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo_ gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   				&& curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
     			sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-    			sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-			sudo apt update
+    			sudo_ tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+			apt_transaction sudo_ apt-get update
 		elif is_fedora || is_ostree || is_rhel; then
 			pkg_install curl
 			curl -s -L -k https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
-  				sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+  				sudo_ tee /etc/yum.repos.d/nvidia-container-toolkit.repo
 		elif is_suse; then
-			sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+			sudo_ zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
 		fi
         pkg_install nvidia-container-toolkit
 		if ! is_arch && ! is_cachy; then
@@ -197,7 +197,7 @@ inresolve () {
     git clone https://github.com/zelikos/davincibox.git || die "Failed to download DaVinciBox."
     cd davincibox || die "Failed to enter DaVinciBox directory."
     getresolve
-    unzip ${_archive_name}.zip
+    unzip ${_archive_name}.zip || die "Failed to extract the DaVinci Resolve archive."
     if is_nvidia; then
         # fix #1406 - upstream "unresolvable CDI devices" bug
         sed -i 's|--additional-flags "--device nvidia.com/gpu=all"|--additional-flags "--gpus all"|' setup.sh
@@ -236,16 +236,7 @@ inresolve () {
 }
 # menu
 while true; do
-	CHOICE=$(zenity --list --title "AutoResolveBox" --text "Which version do you want to install?" \
-		--column="Version" \
-		"Free" \
-		"Studio" \
-		"Cancel" \
-		--height=330 --width=300)
-
-	if [ $? -ne 0 ]; then
-		break
-	fi
+	CHOICE=$(radioselect --no-default --title "AutoResolveBox" --text "Which version do you want to install?" "Free" "Studio" "$msg070") || exit 100
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
@@ -254,7 +245,7 @@ while true; do
 	"Studio") _upkgname='davinci-resolve-studio'
 	  	inresolve
     	exit 0 ;;
-	"Cancel") break ;;
+	"$msg070") exit 100 ;;
 	*) echo "Invalid Option" ;;
 	esac
 done

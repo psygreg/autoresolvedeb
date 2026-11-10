@@ -173,16 +173,7 @@ makeresolvedeb () {
 }
 # menu
 while true; do
-	CHOICE=$(zenity --list --title "AutoResolveDeb" --text "Which version do you want to install?" \
-		--column="Version" \
-		"Free" \
-		"Studio" \
-		"Cancel" \
-		--height=330 --width=300)
-
-	if [ $? -ne 0 ]; then
-		break
-	fi
+	CHOICE=$(radioselect --no-default --title "AutoResolveDeb" --text "Which version do you want to install?" "Free" "Studio" "$msg070") || exit 100
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
@@ -192,11 +183,11 @@ while true; do
 		prep_tmp_noram
 		getresolve
 		makeresolvedeb
-		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
+		unzip ${_archive_name}.zip || die "Failed to extract the DaVinci Resolve archive."
+		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run || die "Failed to build DaVinci Resolve packages with MakeResolveDeb."
 		pkg_fromfile davinci-resolve_${_filever}-mrd${mrdver}_amd64.deb
 		pkg_fromfile davinci-resolve-data_${_filever}-mrd${mrdver}_amd64.deb
-		info "DaVinci Resolve Free has been installed successfully."
+		info "$finishmsg"
 		exit 0 ;;
 	"Studio") _upkgname='davinci-resolve-studio'
 		check_disk_space "$_upkgname"
@@ -205,16 +196,16 @@ while true; do
 		prep_tmp_noram
 		getresolve
 		makeresolvedeb
-		unzip ${_archive_name}.zip
-		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run
+		unzip ${_archive_name}.zip || die "Failed to extract the DaVinci Resolve archive."
+		./makeresolvedeb_${mrdver}_multi.sh ${_archive_run_name}.run || die "Failed to build DaVinci Resolve packages with MakeResolveDeb."
 		pkg_fromfile davinci-resolve-studio_${_filever}-mrd${mrdver}_amd64.deb
 		pkg_fromfile davinci-resolve-studio-data_${_filever}-mrd${mrdver}_amd64.deb
         export AUTO_DVNAT=1
         # call_script resolveaac
         call_script resolvehw
-		info "DaVinci Resolve Studio has been installed successfully."
+		info "$finishmsg"
 		exit 0 ;;
-	"Cancel") break ;;
+	"$msg070") exit 100 ;;
 	*) echo "Invalid Option" ;;
 	esac
 done

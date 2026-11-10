@@ -201,16 +201,7 @@ patch_aur_pkgbuild () {
 }
 
 while true; do
-	CHOICE=$(zenity --list --title "AutoResolvePkg" --text "Which version do you want to install?" \
-		--column="Version" \
-		"Free" \
-		"Studio" \
-		"Cancel" \
-		--height=330 --width=300)
-
-	if [ $? -ne 0 ]; then
-		break
-	fi
+	CHOICE=$(radioselect --no-default --title "AutoResolvePkg" --text "Which version do you want to install?" "Free" "Studio" "$msg070") || exit 100
 
 	case $CHOICE in
 	"Free") _upkgname='davinci-resolve'
@@ -219,7 +210,9 @@ while true; do
 			askpass
 			depcheck
 			prep_tmp_noram
-			git clone https://aur.archlinux.org/davinci-resolve.git && cd davinci-resolve
+			rm -rf -- davinci-resolve
+			git clone https://aur.archlinux.org/davinci-resolve.git || die "Failed to fetch davinci-resolve from the AUR."
+			cd davinci-resolve || die "Failed to enter the davinci-resolve build directory."
 			getresolve
 			patch_aur_pkgbuild
 			echo "Starting package build. This may take a while..."
@@ -238,7 +231,9 @@ while true; do
 		askpass
 		depcheck
 		prep_tmp_noram
-		git clone https://aur.archlinux.org/davinci-resolve-studio.git && cd davinci-resolve-studio
+		rm -rf -- davinci-resolve-studio
+		git clone https://aur.archlinux.org/davinci-resolve-studio.git || die "Failed to fetch davinci-resolve-studio from the AUR."
+		cd davinci-resolve-studio || die "Failed to enter the davinci-resolve-studio build directory."
 		getresolve
 		patch_aur_pkgbuild
 		echo "Starting package build. This may take a while..."
@@ -249,7 +244,7 @@ while true; do
         call_script resolvehw
 		info "$finishmsg"
 		exit 0 ;;
-	"Cancel") break ;;
+	"$msg070") exit 100 ;;
 	*) echo "Invalid Option" ;;
 	esac
 done
