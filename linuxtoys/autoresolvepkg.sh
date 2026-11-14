@@ -73,6 +73,49 @@ patch_aur_pkgbuild () {
 	sed -i -E "0,/^[[:space:]]*sha256sums=\('[^']*'/s||sha256sums=('${archive_sha}'|" "$pkgbuild"
 }
 
+# makepkg installs missing build dependencies with a targeted pacman call,
+# which fails on a partially upgraded system: the gstreamer family pins its
+# exact full versions across itself (qt5-multimedia pulls gst-plugins-base,
+# which pins gst-plugins-base-libs=1.28.9-1.1, while an already installed
+# gst-libav/gst-plugin-va/gst-plugins-bad/gst-plugins-ugly still pin the
+# previous version and are not part of the transaction). Arch does not
+# support partial upgrades; the only fix is a full system upgrade before
+# the build. Detected through pacman's violation lines (":: ... =<ver>"),
+# which keep package names and versions through any translation.
+aur_makepkg () {
+	local build_log build_status
+	build_log=$(mktemp) || build_log=/dev/null
+	makepkg -si 2>&1 | tee -- "$build_log"
+	build_status=${PIPESTATUS[0]}
+	if (( build_status == 0 )); then
+		[[ "$build_log" == /dev/null ]] || rm -f -- "$build_log"
+		return 0
+	fi
+	# Only heal when the system actually lags the (freshly rated) mirrors;
+	# a system ahead of the repos is left alone instead of being
+	# downgrade-attempted.
+	if grep -Eq '^:: .+[A-Za-z0-9._+-]+=[0-9][0-9.]*-[0-9]+' -- "$build_log" &&
+		[[ -n $(pacman -Quq 2>/dev/null) ]]; then
+		echo "Dependency resolution failed: installed packages pin exact versions the current repositories no longer provide."
+		echo "Arch does not support partial upgrades; upgrading the whole system first, then retrying the build once..."
+		# A system upgrade must never be recorded in the transaction map.
+		runner_lock "package-transaction" "Upgrading the system..."
+		pacman_lock_guard
+		if ! pacman_transaction sudo_ pacman -Syu --noconfirm; then
+			runner_unlock
+			[[ "$build_log" == /dev/null ]] || rm -f -- "$build_log"
+			die "Failed to upgrade the system before retrying the build."
+		fi
+		runner_unlock
+		if makepkg -si; then
+			[[ "$build_log" == /dev/null ]] || rm -f -- "$build_log"
+			return 0
+		fi
+	fi
+	[[ "$build_log" == /dev/null ]] || rm -f -- "$build_log"
+	die "Failed to build package"
+}
+
 while true; do
 	CHOICE=$(radioselect --no-default --title "AutoResolvePkg" --text "Which version do you want to install?" "Free" "Studio" "$msg070") || exit 100
 
@@ -89,7 +132,7 @@ while true; do
 			getresolve
 			patch_aur_pkgbuild
 			echo "Starting package build. This may take a while..."
-			makepkg -si || die "Failed to build package"
+			aur_makepkg
 			_append_transmap "pkg davinci-resolve"
 			info "$finishmsg"
 		else
@@ -110,7 +153,7 @@ while true; do
 		getresolve
 		patch_aur_pkgbuild
 		echo "Starting package build. This may take a while..."
-		makepkg -si || die "Failed to build package"
+		aur_makepkg
 		_append_transmap "pkg davinci-resolve-studio"
         export AUTO_DVNAT=1
         # call_script resolveaac
